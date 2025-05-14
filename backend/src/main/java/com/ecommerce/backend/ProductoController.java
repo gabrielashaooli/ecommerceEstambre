@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin(origins = "http://localhost:3000") // Permite que React acceda a esta API
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductoController {
 
     @Autowired
@@ -15,6 +15,6 @@ public class ProductoController {
 
     @GetMapping
     public List<Producto> obtenerProductos() {
-        return productoRepository.findAll(); // Devuelve todos los productos
+        return productoRepository.findAll();
     }
 }
