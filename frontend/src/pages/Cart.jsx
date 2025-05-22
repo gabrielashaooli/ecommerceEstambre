@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { FaShoppingBag } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
-function Cart({ items, isAuthenticated, getTotalPrice, clearCart }) {
+function Cart() {
+  const { items, getTotalPrice, clearCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
@@ -24,7 +29,7 @@ function Cart({ items, isAuthenticated, getTotalPrice, clearCart }) {
       <div className="min-h-screen bg-gradient-to-b from-[#e6f1ef] to-[#f9fafc]">
         <Navbar />
         <div className="container mx-auto p-6 flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
-        <FaShoppingBag className="h-16 w-16 text-[#7f9e99] mb-4" />
+          <FaShoppingBag className="h-16 w-16 text-[#7f9e99] mb-4" />
           <h2 className="text-2xl font-bold text-[#45654f] mb-2">Tu carrito está vacío</h2>
           <p className="text-[#7f9e99] mb-6">¿No sabes qué comprar? ¡Tenemos muchos productos para ti!</p>
           <Link

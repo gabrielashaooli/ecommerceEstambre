@@ -1,47 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const [productos, setProductos] = useState([]);
-  const { addToCart } = useCart(); // ✅ usar el carrito
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/productos")
-      .then((res) => res.json())
-      .then((data) => setProductos(data))
-      .catch((err) => console.log(err));
-  }, []);
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-gradient-to-b from-[#e6f1ef] to-[#f9fafc] min-h-screen p-6">
-      <h1 className="text-4xl font-extrabold text-center text-[#45654f] mb-2">
-        🧵 Bienvenida a la tienda
-      </h1>
-      <p className="text-center text-[#7f9e99] mb-10">
-        Explora nuestros productos antes de crear tu cuenta o iniciar sesión.
-      </p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {productos.map((prod) => (
-          <div
-            key={prod.id}
-            className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-transform p-6"
+    <div className="min-h-screen bg-[#e6f1ef]">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center text-center px-4 py-20 bg-gradient-to-b from-[#45654f]/20 to-[#e6f1ef]">
+        <h1 className="text-5xl font-extrabold text-[#45654f] mb-4">Bienvenida a <span className="text-[#ff9a52]">EstambresUP</span></h1>
+        <p className="text-[#7f9e99] max-w-xl mb-6">
+          Tu tienda de estambres para tejer con amor. Compra fácil, rápido y con productos de calidad premium.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            onClick={() => navigate("/products")}
+            className="bg-[#ff9a52] text-white px-6 py-3 rounded hover:bg-[#ffbf91]"
           >
-            <h2 className="text-xl font-bold text-[#45654f] mb-2">{prod.nombreProducto}</h2>
-            <p className="text-[#7f9e99] mb-4">{prod.descripcion}</p>
-            <div className="text-sm text-[#45654f] mb-4">
-              <p>💰 <span className="font-semibold">Precio:</span> ${prod.precio}</p>
-              <p>📦 <span className="font-semibold">Stock:</span> {prod.stock} unidades</p>
-            </div>
-            <button
-              onClick={() => addToCart(prod)}
-              className="mt-4 w-full bg-[#ff9a52] text-white py-2 rounded-md hover:bg-[#ffbf91] transition"
-            >
-              Agregar al carrito
-            </button>
+            Ver productos
+          </button>
+          <button
+            onClick={() => navigate("/register")}
+            className="border border-[#7f9e99] text-[#45654f] px-6 py-3 rounded hover:bg-[#dfeeea]"
+          >
+            Crear cuenta
+          </button>
+        </div>
+      </section>
+
+      {/* Beneficios */}
+      <section className="bg-white py-16 px-4">
+        <h2 className="text-3xl font-bold text-center text-[#45654f] mb-10">¿Por qué elegirnos?</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="bg-[#f9fafc] p-6 rounded-lg shadow text-center">
+            <p className="text-2xl mb-2">🧶</p>
+            <h3 className="text-xl font-bold text-[#45654f]">Calidad premium</h3>
+            <p className="text-[#7f9e99] mt-2">Estambres seleccionados con cuidado y amor.</p>
           </div>
-        ))}
-      </div>
+          <div className="bg-[#f9fafc] p-6 rounded-lg shadow text-center">
+            <p className="text-2xl mb-2">💖</p>
+            <h3 className="text-xl font-bold text-[#45654f]">Hecho con pasión</h3>
+            <p className="text-[#7f9e99] mt-2">Apoyamos proyectos creativos como el tuyo.</p>
+          </div>
+          <div className="bg-[#f9fafc] p-6 rounded-lg shadow text-center">
+            <p className="text-2xl mb-2">🔒</p>
+            <h3 className="text-xl font-bold text-[#45654f]">Compra segura</h3>
+            <p className="text-[#7f9e99] mt-2">Tus datos están protegidos y tu compra garantizada.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Final */}
+      <section className="py-16 bg-gradient-to-r from-[#45654f] to-[#7f9e99] text-white text-center px-4">
+        <h2 className="text-3xl font-bold mb-4">¿Lista para empezar?</h2>
+        <p className="mb-6">Haz clic abajo para explorar todos nuestros productos.</p>
+        <button
+          onClick={() => navigate("/products")}
+          className="bg-[#ff9a52] hover:bg-[#ffbf91] text-white font-semibold px-8 py-4 rounded"
+        >
+          Ver productos
+        </button>
+      </section>
+
+      <footer className="bg-[#45654f] text-white text-center py-6">
+        <p>© {new Date().getFullYear()} EstambresUP. Todos los derechos reservados.</p>
+      </footer>
     </div>
   );
 }

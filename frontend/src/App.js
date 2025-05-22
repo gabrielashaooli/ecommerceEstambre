@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Products from "./pages/Products";
+
 // Aún no has creado Orders.jsx, puedes hacerlo más adelante si quieres
 // import Orders from "./pages/Orders";
 
@@ -27,6 +29,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/products" element={<Products />} />
+
         {/* <Route path="/orders" element={<Orders />} /> */}
       </Routes>
     </Router>
