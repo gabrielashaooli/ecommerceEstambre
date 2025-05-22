@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useCart } from "../context/CartContext";
 
 function Home() {
   const [productos, setProductos] = useState([]);
+  const { addToCart } = useCart(); // ✅ usar el carrito
 
   useEffect(() => {
     fetch("http://localhost:8080/api/productos")
@@ -31,7 +33,10 @@ function Home() {
               <p>💰 <span className="font-semibold">Precio:</span> ${prod.precio}</p>
               <p>📦 <span className="font-semibold">Stock:</span> {prod.stock} unidades</p>
             </div>
-            <button className="mt-4 w-full bg-[#ff9a52] text-white py-2 rounded-md hover:bg-[#ffbf91] transition">
+            <button
+              onClick={() => addToCart(prod)}
+              className="mt-4 w-full bg-[#ff9a52] text-white py-2 rounded-md hover:bg-[#ffbf91] transition"
+            >
               Agregar al carrito
             </button>
           </div>
@@ -42,4 +47,3 @@ function Home() {
 }
 
 export default Home;
-
