@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { useCart } from "../context/CartContext";
 
 const Checkout = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +18,7 @@ const Checkout = () => {
 
   const [procesando, setProcesando] = useState(false);
   const navigate = useNavigate();
+  const { clearCart } = useCart();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,7 +28,8 @@ const Checkout = () => {
     e.preventDefault();
     setProcesando(true);
     setTimeout(() => {
-      toast("¡Compra completada! Gracias por tu pedido.");
+      toast.success("¡Compra completada! Gracias por tu pedido.");
+      clearCart();
       navigate("/");
     }, 2000);
   };

@@ -14,10 +14,10 @@ function Login() {
     e.preventDefault();
     const success = await login(correo, contrasena);
     if (success) {
-      toast("Login exitoso");
+      ("Login exitoso");
       navigate("/");
     } else {
-      toast("Correo o contraseña incorrectos");
+      ("Correo o contraseña incorrectos");
     }
   };
 

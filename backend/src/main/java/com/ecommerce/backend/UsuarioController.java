@@ -1,8 +1,10 @@
 package com.ecommerce.backend;
 
+import com.ecommerce.backend.seguridad.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,6 +16,12 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // REGISTRO
     @PostMapping("/usuarios")
@@ -27,8 +35,10 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya está registrado.");
         }
 
+        nuevoUsuario.setContrasena(passwordEncoder.encode(nuevoUsuario.getContrasena()));
         nuevoUsuario.setEstadoCuenta("Activada");
         usuarioRepository.save(nuevoUsuario);
+
         return ResponseEntity.ok("Registro exitoso.");
     }
 
@@ -37,13 +47,21 @@ public class UsuarioController {
     public ResponseEntity<?> loginJwt(@RequestBody Usuario usuario) {
         Optional<Usuario> existente = usuarioRepository.findByCorreo(usuario.getCorreo());
 
-        if (existente.isPresent() && existente.get().getContrasena().equals(usuario.getContrasena())) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("mensaje", "Login exitoso");
-            response.put("usuario", existente.get());
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Correo o contraseña incorrectos");
+        if (existente.isPresent()) {
+            Usuario u = existente.get();
+            // Comparar contraseña encriptada con la ingresada
+            if (passwordEncoder.matches(usuario.getContrasena(), u.getContrasena())) {
+                String token = jwtUtil.generarToken(u.getCorreo());
+
+                Map<String, Object> response = new HashMap<>();
+                response.put("mensaje", "Login exitoso");
+                response.put("token", token);
+                response.put("usuario", u);
+
+                return ResponseEntity.ok(response);
+            }
         }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Correo o contraseña incorrectos");
     }
 }

@@ -1,11 +1,14 @@
+// Archivo: src/context/CartContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 const CART_KEY = "carrito";
 
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState([]);
+  const { isAuthenticated } = useAuth();
 
   // Cargar carrito desde localStorage al inicio
   useEffect(() => {
@@ -20,7 +23,7 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Guardar carrito en localStorage cada vez que cambie
+  // Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem(CART_KEY, JSON.stringify(items));
   }, [items]);
