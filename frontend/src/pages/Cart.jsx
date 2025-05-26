@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaShoppingBag } from "react-icons/fa";
-import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Cart() {
-  const { items, getTotalPrice, clearCart } = useCart();
+  const { items, getTotalPrice, clearCart, updateQuantity, removeFromCart} = useCart();
   const { isAuthenticated } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
+  
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      alert("Debes iniciar sesión para completar la compra");
+      toast("Debes iniciar sesión para completar la compra");
       navigate("/login");
       return;
     }
@@ -27,13 +28,12 @@ function Cart() {
   if (!items || items.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#e6f1ef] to-[#f9fafc]">
-        <Navbar />
         <div className="container mx-auto p-6 flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
           <FaShoppingBag className="h-16 w-16 text-[#7f9e99] mb-4" />
           <h2 className="text-2xl font-bold text-[#45654f] mb-2">Tu carrito está vacío</h2>
           <p className="text-[#7f9e99] mb-6">¿No sabes qué comprar? ¡Tenemos muchos productos para ti!</p>
           <Link
-            to="/"
+            to="/products"
             className="bg-[#ff9a52] hover:bg-[#ffbf91] text-white px-4 py-2 rounded"
           >
             Ver productos
@@ -45,7 +45,6 @@ function Cart() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e6f1ef] to-[#f9fafc]">
-      <Navbar />
       <div className="container mx-auto p-6">
         <h1 className="text-3xl font-bold text-[#45654f] mb-6">Tu carrito</h1>
 
@@ -57,9 +56,28 @@ function Cart() {
                   <h3 className="font-bold text-[#45654f]">{item.nombreProducto}</h3>
                   <p className="text-[#7f9e99]">{item.descripcion}</p>
                   <p className="text-[#7f9e99]">Precio: ${item.precio}</p>
-                  <p className="text-[#7f9e99]">Cantidad: {item.cantidad}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <label className="text-[#7f9e99]">Cantidad:</label>
+                    <input
+                    type="number"
+                    min="1"
+                    max={item.stock ?? 99}
+                    value={item.cantidad}
+                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                    className="w-16 px-2 py-1 border border-gray-300 rounded"
+                  />
                 </div>
-              ))}
+
+                <p className="text-[#7f9e99] mt-2">Subtotal: ${(item.precio * item.cantidad).toFixed(2)}</p>
+
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-sm text-red-600 hover:underline mt-2"
+                >
+                  Eliminar
+                </button>
+              </div>
+            ))}
             </div>
           </div>
 

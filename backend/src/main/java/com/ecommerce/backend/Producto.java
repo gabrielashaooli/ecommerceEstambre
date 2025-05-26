@@ -8,7 +8,7 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto") // <- nombre real en la base de datos
+    @Column(name = "id_producto")
     private Long id;
 
     @Column(name = "nombre_producto")
@@ -20,18 +20,18 @@ public class Producto {
 
     private Integer stock;
 
-    @Column(name = "id_categoria")
-    private Integer idCategoria;
-
     private String imagen;
 
-    private String nombre;
+    // Relación con categoría
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
-    // Getters y Setters
-
+    // Getters y setters
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,6 +39,7 @@ public class Producto {
     public String getNombreProducto() {
         return nombreProducto;
     }
+
     public void setNombreProducto(String nombreProducto) {
         this.nombreProducto = nombreProducto;
     }
@@ -46,6 +47,7 @@ public class Producto {
     public String getDescripcion() {
         return descripcion;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -53,6 +55,7 @@ public class Producto {
     public Double getPrecio() {
         return precio;
     }
+
     public void setPrecio(Double precio) {
         this.precio = precio;
     }
@@ -60,28 +63,24 @@ public class Producto {
     public Integer getStock() {
         return stock;
     }
+
     public void setStock(Integer stock) {
         this.stock = stock;
-    }
-
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
     }
 
     public String getImagen() {
         return imagen;
     }
+
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Categoria getCategoria() {
+        return categoria;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

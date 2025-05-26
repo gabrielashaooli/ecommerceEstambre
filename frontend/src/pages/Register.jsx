@@ -9,20 +9,32 @@ function Register() {
   const navigate = useNavigate();
 
   const manejarRegistro = async () => {
-    setMensaje("");
-    const res = await fetch("http://localhost:8080/api/usuarios", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, correo, contrasena }),
-    });
+  setMensaje("");
 
-    const data = await res.text();
-    setMensaje(data);
+  if (!nombre || !correo || !contrasena) {
+    setMensaje("Por favor, completa todos los campos.");
+    return;
+  }
 
-    if (data === "Registro exitoso.") {
-      navigate("/login");
-    }
-  };
+  if (contrasena.length < 6) {
+    setMensaje("La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
+
+  const res = await fetch("http://localhost:8080/api/usuarios", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre, correo, contrasena }),
+  });
+
+  const data = await res.text();
+  setMensaje(data);
+
+  if (data === "Registro exitoso.") {
+    navigate("/login");
+  }
+};
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#d3dbd9] to-white">

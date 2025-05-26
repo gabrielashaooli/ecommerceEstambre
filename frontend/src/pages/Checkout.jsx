@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { toast } from "react-toastify";
+
 
 const Checkout = () => {
   const [formData, setFormData] = useState({
@@ -26,14 +27,13 @@ const Checkout = () => {
     e.preventDefault();
     setProcesando(true);
     setTimeout(() => {
-      alert("¡Compra completada! Gracias por tu pedido.");
+      toast("¡Compra completada! Gracias por tu pedido.");
       navigate("/");
     }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e6f1ef] to-[#f9fafc]">
-      <Navbar />
       <div className="container mx-auto p-6 max-w-3xl">
         <h1 className="text-3xl font-bold text-[#45654f] mb-6 text-center">Finalizar compra</h1>
 
